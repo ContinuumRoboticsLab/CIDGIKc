@@ -1,4 +1,4 @@
-# dgik4cr
+# CIDGIKc
 
 A distance-based inverse kinematics solver for extensible segment constant curvature continuum robots.
 
