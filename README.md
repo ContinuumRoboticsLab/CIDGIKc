@@ -10,14 +10,16 @@ A distance-based inverse kinematics solver for extensible segment constant curva
 4. Run the following:
 
 ```sh
-git clone https://github.com/hanjzh/dgik4cr.git && cd dgik4cr
+# clone the repo and navigate to the cidgikc directory
+git clone https://github.com/ContinuumRoboticsLab/CIDGIKc.git
+cd cidgikc
 
 # Create & activate the conda env
 conda env create -f environment.yml
-conda activate dgik4cr-env
-
-# Install the iPython kernel spec file (necessary to use the conda environment
-# in Jupyter notebooks)
-python -m ipykernel install --user --name dgik4cr-env
+conda activate cidgikc-env
 ```
-5. Run the algorithm on a single problem instance using "exp_sing_contrived.py" in the "scripts" directory.
+5. Run the algorithm on a single problem instance by running the following:
+ ```sh 
+ cd scripts 
+ python exp_sing_contrived.py
+ ```

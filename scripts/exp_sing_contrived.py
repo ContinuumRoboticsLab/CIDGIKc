@@ -8,8 +8,8 @@
     Affl.: <University of Toronto, Department of Computer Science, Continuum Robotics Laboratory>
 """
 
-from dgik4cr.utils import forward_kinematics, CC2Triangle, Triangle2CC
-from dgik4cr.convex_iteration import CIDGIKc, ee_error
+from cidgikc.utils import forward_kinematics, CC2Triangle, Triangle2CC
+from cidgikc.convex_iteration import CIDGIKc, ee_error
 
 import numpy as np
 import numpy as np

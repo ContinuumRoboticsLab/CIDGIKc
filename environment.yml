@@ -1,0 +1,28 @@
+name: cidgikc-env
+channels:
+    - defaults
+    - conda-forge
+    - anaconda
+
+dependencies:
+    - python=3.9
+    - pip=23
+
+    - numpy=1.23
+    - matplotlib=3.6
+    - jupyterlab=3.5
+    - ipynbname=2021.3
+
+    - opencv
+    - cvxpy=1.2.1
+    - pytransform3d=2.0.0
+
+    # Testing & linting
+    - pytest=7.1
+    - pytest-cov=4.0
+    - flake8=6.0
+    
+    - pip:
+        # - <some package only available on PyPI>
+        - -e .  # build local dgik4cr package
+        - mosek==9.3.21
