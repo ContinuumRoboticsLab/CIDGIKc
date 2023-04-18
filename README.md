@@ -1,4 +1,4 @@
-# dgik4cr
+# CIDGIKc
 
 A distance-based inverse kinematics solver for extensible segment constant curvature continuum robots.
 
@@ -18,6 +18,7 @@ cd cidgikc
 conda env create -f environment.yml
 conda activate cidgikc-env
 ```
+
 5. Run the algorithm on a single problem instance by running the following:
  ```sh 
  cd scripts 
