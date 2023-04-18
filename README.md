@@ -6,7 +6,7 @@ A distance-based inverse kinematics solver for extensible segment constant curva
 
 1. Install conda ([Miniconda3](https://docs.conda.io/en/latest/miniconda.html) recommended)
 2. (Optional) install the [mamba](https://mamba.readthedocs.io/en/latest/installation.html#existing-conda-install) package. In this case, replace all the "conda" commands with "mamba" below.
-3. Install MOSEK and obtain a liscence (free for academic use) https://www.mosek.com/downloads/
+3. Install MOSEK and obtain a license (free for academic use) https://www.mosek.com/downloads/
 4. Run the following:
 
 ```sh
