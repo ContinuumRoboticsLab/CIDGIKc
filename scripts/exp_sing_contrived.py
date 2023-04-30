@@ -23,7 +23,7 @@ solve_with_obstacles = True
 
 # Robot setup
 n = 3 # total segments
-d = 3 # dimension = 2, i.e. planar
+d = 2 # dimension = 2, i.e. planar
 # Solver Specifications
 ee_spec = 1 # 0:position, 1: 5-DoF pose, 2: 6-DoF pose (only for d =3)
 eigen_tol = 1e-7 # eigenvalue limit to be considered converged
@@ -35,14 +35,6 @@ seg_range = 0.2 # extension/compression range with respect to mid-extension
 min_L = (seg_length_mid - seg_range)*np.ones(n)
 max_L = (seg_length_mid + seg_range)*np.ones(n)
 L_range = np.array((min_L, max_L))
-
-# forward kinematics parameters used to obtain IK query
-theta = np.array([np.pi/3, 0, np.pi/6])
-if d==2:    
-    delta = np.zeros(n) # 0 for PLANAR
-else:
-    delta = np.array([np.pi, 3/4*np.pi, 0]) # 0 for PLANAR
-L = np.array([0.3, 0.35, 0.3])
 
 # base definition (fixed don't change)
 ee_scalefac = 1 # scaling of ee specification points
@@ -66,8 +58,31 @@ else:
 ##########################################################################################################################
 # PROBLEM SETUP
 
-# Run Forwards Kinematics to obtain IK query
-w_goal, wprime_goal, wpprime_goal, ee_goal, all_CC_arcs = forward_kinematics(theta, delta, L, n, d, ee_scalefac)
+# Specific IK query with forward kinematics OR directly specify
+use_fk = True
+if use_fk:
+    # Run Forwards Kinematics to obtain IK query
+    # forward kinematics parameters used to obtain IK query
+    theta = np.array([np.pi/3, 0, np.pi/6])
+    if d==2:    
+        delta = np.zeros(n) # 0 for PLANAR
+    else:
+        delta = np.array([np.pi, 3/4*np.pi, 0])
+    L = np.array([0.3, 0.35, 0.3])
+
+    w_goal, wprime_goal, wpprime_goal, ee_goal, all_CC_arcs = forward_kinematics(theta, delta, L, n, d, ee_scalefac)
+else:
+    # specify 2D (3x3 matrix) or 3D (4x4 matrix) target pose
+    ee_goal = np.array(([ 0.73919892, -0.35355339, -0.5732233,  -0.66730695], [ 0.61237244,  0.70710678,  0.35355339,  0.05427878], [ 0.28033009, -0.61237244,  0.73919892,  0.61334426], [ 0. ,         0.,          0.,          1.        ]))
+    # target position & orientation of EE
+    p_star = ee_goal[0:d, d].transpose()  
+    # current pose of EE
+    zhat_star = ee_goal[0:d, d-1].transpose()  # desired orientation SO(3)
+    xhat_star = ee_goal[0:d, d-2].transpose()  # desired orientation SE(3)    
+    
+    w_goal = p_star
+    wprime_goal = p_star + ee_scalefac*zhat_star
+    wpprime_goal = p_star + ee_scalefac*xhat_star
 
 # Setup a straight mid-extension initialization
 L_guess = seg_length_mid*np.ones(n)
@@ -90,16 +105,17 @@ else:
 
 print("Solved in ", np.sum(times), " seconds.")
 print("Completed in ", k, "iterations.")
-
+print(" ")
 ##########################################################################################################################
 # SOLUTION RECOVERY
 
 theta_soln, delta_soln, L_soln  = Triangle2CC(Z_soln, n, d, base, baseprime, w_goal, wprime_goal, wpprime_goal)
 soln_params = (theta_soln, delta_soln, L_soln)
-
+print("The following values are for segments indexed t = 0 ... n, i.e. from base to tip.")
 print("theta_soln [rad] : ", theta_soln)
 print("delta_soln [rad] : ", delta_soln)
 print("L_soln [m]       : ", L_soln)
+print(" ")
 
 w_goal_recov, wprime_goal_recov, wpprime_goal_recov, T_c_tip, all_CC_arcs = forward_kinematics(theta_soln, delta_soln, L_soln, n, d, ee_scalefac)
 
